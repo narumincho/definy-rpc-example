@@ -8,5 +8,5 @@ GitPod からも開いて動作を確認することができます
 実行コマンド
 
 ```sh
-deno run --check ./main.ts
+deno run --check --allow-net=[::1]:8000 ./main.ts
 ```
