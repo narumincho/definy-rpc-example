@@ -3,16 +3,31 @@ import {
   DefinyRpcParameter,
   handleRequest,
 } from "https://raw.githubusercontent.com/narumincho/definy/593ae02fdb954466b9c0be5e52770567648f470b/deno-lib/definyRpc/server/definyRpc.ts";
+import { createApiFunction } from "https://raw.githubusercontent.com/narumincho/definy/593ae02fdb954466b9c0be5e52770567648f470b/deno-lib/definyRpc/core/apiFunction.ts";
 import * as coreType from "https://raw.githubusercontent.com/narumincho/definy/593ae02fdb954466b9c0be5e52770567648f470b/deno-lib/definyRpc/core/coreType.ts";
 import { requestObjectToSimpleRequest } from "https://raw.githubusercontent.com/narumincho/definy/593ae02fdb954466b9c0be5e52770567648f470b/deno-lib/simpleRequestResponse/simpleRequest.ts";
 import { simpleResponseToResponse } from "https://raw.githubusercontent.com/narumincho/definy/593ae02fdb954466b9c0be5e52770567648f470b/deno-lib/simpleRequestResponse/simpleResponse.ts";
+import { AccountType } from "./generated/api/custom.ts";
 
 serve(
   async (request) => {
     const parameter: DefinyRpcParameter = {
       name: "example",
       all: () => ({
-        functionsList: [],
+        functionsList: [
+          createApiFunction({
+            name: "staticAccountType",
+            description: "ダミーのアカウントタイプを返す",
+            isMutation: false,
+            namespace: coreType.FunctionNamespace.local(["custom"]),
+            needAuthentication: false,
+            input: coreType.Unit.type(),
+            output: AccountType.type(),
+            resolve: () => {
+              return AccountType.human(1700);
+            },
+          }),
+        ],
         typeList: [
           coreType.DefinyRpcTypeInfo.from({
             name: "AccountType",
