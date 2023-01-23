@@ -15,7 +15,7 @@ serve(
         typeList: [],
       }),
       originHint: new URL(request.url).origin,
-      codeGenOutputFolderPath: undefined,
+      codeGenOutputFolderPath: new URL("./generated/", import.meta.url),
     };
     const simpleRequest = await requestObjectToSimpleRequest(request);
     if (simpleRequest === undefined) {
